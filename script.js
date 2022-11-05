@@ -175,7 +175,7 @@ function getSecondDotClicked(e) {
 		for (let i = 74; i < 700; i+=184) {
 			for (let j = 74; j < 700; j+=184) {
 				dist = ((x-i)**2 + (y-j)**2)**0.5;
-				if ((dist <= circleRadius) && (Math.abs(firstDot.x-i)+Math.abs(firstDot.y-j) === 184)) {
+				if ((dist <= circleRadius+10) && (Math.abs(firstDot.x-i)+Math.abs(firstDot.y-j) === 184)) {
 					// Once the clicked dot has been identified, and it is 
 					// verified to be besides the first dot, turn it green
 					drawCircle(i, j, circleRadius, context, 'green');
@@ -186,8 +186,10 @@ function getSecondDotClicked(e) {
 					if (firstDot.x === secondDot.x) {
 						// Draw vertical line
 						drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y), 184, context, 5, 'blue');
-
-					} 
+					
+					} else {
+						drawHorizontalLine(Math.min(firstDot.x, secondDot.x), firstDot.y, 184, context, 5, 'blue');
+					}
 				}
 			}
 		}
@@ -203,7 +205,7 @@ function getFirstDotClicked(e) {
 		for (let i = 74; i < 700; i+=184) {
 			for (let j = 74; j < 700; j+=184) {
 				dist = ((x-i)**2 + (y-j)**2)**0.5;
-				if (dist <= circleRadius) {
+				if (dist <= circleRadius+10) {
 					// Once the clicked dot has been identified, turn it green
 					drawCircle(i, j, circleRadius, context, 'green');
 					firstDot.x = i;
