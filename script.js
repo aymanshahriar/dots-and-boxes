@@ -1,144 +1,7 @@
-
-
-// Draw a circle on the canvas
-// function used to draw a circle:
-// arc(x_position, y_position, radius, angle_start_angle end)
-/*context.beginPath();
-context.arc(60, 60, 10, 0,  2* Math.PI);
-context.fillStyle = 'red'
-context.fill();
-context.stroke();*/
-
-
-function drawCircle(x, y, r, context, color) {
-	context.strokeStyle = "black";
-	context.lineWidth = 1;
-
-	context.beginPath();
-	context.arc(x, y, r, 0,  2* Math.PI);
-	context.fillStyle = color;
-	context.fill();
-	context.stroke();
-}
-
-function drawVerticalLine(x, y, length, context, thickness, color) {
-
-	context.moveTo(x, y);
-	context.lineTo(x, y+length);
-	context.strokeStyle = color;
-	context.lineWidth = thickness;
-	context.stroke(); 
-}
-
-function drawHorizontalLine(x, y, length, context, thickness, color) {
-		context.moveTo(x, y);
-		context.lineTo(x+length, y);
-		context.strokeStyle = color;
-		context.lineWidth = thickness;
-		context.stroke(); 
-}
-
-function drawDots(context, paddingLength, canvasWidth, canvasHeight, distBetweenDots, circleRadius) {
-	for (let i = paddingLength; i < canvasWidth; i+=distBetweenDots) {
-		for (let j = paddingLength; j < canvasHeight; j+=distBetweenDots) {
-			drawCircle(i, j, circleRadius, context, 'red');
-		}
-	}
-}
-
-function drawVerticalLines(context, paddingLength, canvasWidth, yLastRow, distBetweenDots) {
-	for (let x = paddingLength; x < canvasWidth; x += distBetweenDots) {
-		for (let y = paddingLength; y < yLastRow; y += distBetweenDots) {
-			drawVerticalLine(x, y, distBetweenDots, context, 1, 'black');
-		}
-	}
-}
-
-function drawHorizontalLines(context, paddingLength, canvasWidth, xLastColumn, distBetweenDots) {
-	for (let x = paddingLength; x < xLastColumn; x += distBetweenDots) {
-		for (let y = paddingLength; y < canvasHeight; y += distBetweenDots) {
-			drawHorizontalLine(x, y, distBetweenDots, context, 1, 'black');
-		}
-	}
-}
-
-///////// If a user clicks on a dot, it turns red ////////////////////////
-
-// Get cursor position was borrowed from stackoverflow
-// https://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
-function getCursorPosition(canvas, event) {
-    const rect = canvas.getBoundingClientRect()
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    //console.log("x: " + x + " y: " + y);
-    return [x, y];
-}
-// see if I can disable event
-
-
-/*function getFirstDotClicked(canvas, context, circleRadius, firstDot) {
-
-	
-	canvas.addEventListener('mousedown', function(e) {
-		let mousePos = getCursorPosition(canvas, e);
-    	const x = mousePos[0];
-    	const y = mousePos[1];
-   		let dist = 0;
-			
-		for (let i = 74; i < 700; i+=184) {
-			for (let j = 74; j < 700; j+=184) {
-				dist = ((x-i)**2 + (y-j)**2)**0.5;
-				if (dist <= circleRadius) {
-					drawCircle(i, j, circleRadius, context, 'green');
-					console.log(i, j);
-					firstDot.x = i;
-					firstDot.y = j;
-					canvas.removeEventListener('mousedown');
-				}
-			}
-		}
-	});
-}*/
-
-
-
-//getFirstDotClicked();
-
-
-/*canvas.addEventListener('mousedown', function(e) {
-    let mousePos = getCursorPosition(canvas, e);
-    const x = mousePos[0];
-    const y = mousePos[1];
-   	let dist = 0;
-
-   	// Check if the clicked point is inside a circle
-   	// To know if a point is inside a circle, check if the distance between the mouse point and 
-   	//    centre point of the circle is <= radius
-   	for (let i = 74; i < 700; i+=184) {
-		for (let j = 74; j < 700; j+=184) {
-			dist = ((x-i)**2 + (y-j)**2)**0.5;
-			if (dist <= circleRadius) {
-				context.beginPath();
-				context.arc(i, j, circleRadius, 0,  2* Math.PI);
-				context.fillStyle = 'green';
-				context.fill();
-				context.stroke();
-			}
-		}
-	}
-    
-});
-*/
-/*canvas.addEventListener('mousemove', function(e) {
-    getCursorPosition(canvas, e)
-})*/
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Use a DOM selector method to get the canvas element
 const canvas = document.getElementById('myCanvas');
 // Get the context of the canvas element, which is used to draw on the canvas
-const context = canvas.getContext('2d');
+const context = canvas.getContext('2d'); 
 
 const circleRadius = 15;
 const canvasHeight = 700;
@@ -150,9 +13,76 @@ const distBetweenDots = 184;
 const yLastRow = paddingLength + ((gridSize-1)*distBetweenDots);
 const xLastColumn = paddingLength + ((gridSize-1)*distBetweenDots);
 
-drawVerticalLines(context, paddingLength, canvasWidth, yLastRow, distBetweenDots);
-drawHorizontalLines(context, paddingLength, canvasWidth, xLastColumn, distBetweenDots);
-drawDots(context, paddingLength, canvasWidth, canvasHeight, distBetweenDots, circleRadius);
+function drawCircle(x, y, r, color) {
+	context.strokeStyle = "black";
+	context.lineWidth = 1;
+
+	context.beginPath();
+	context.arc(x, y, r, 0,  2* Math.PI);
+	context.fillStyle = color;
+	context.fill();
+	context.stroke();
+}
+
+function drawVerticalLine(x, y, length, thickness, color) {
+
+	context.moveTo(x, y);
+	context.lineTo(x, y+length);
+	context.strokeStyle = color;
+	context.lineWidth = thickness;
+	context.stroke(); 
+}
+
+function drawHorizontalLine(x, y, length, thickness, color) {
+		context.moveTo(x, y);
+		context.lineTo(x+length, y);
+		context.strokeStyle = color;
+		context.lineWidth = thickness;
+		context.stroke(); 
+}
+
+function drawDots(paddingLength, canvasWidth, canvasHeight, distBetweenDots, circleRadius) {
+	for (let i = paddingLength; i < canvasWidth; i+=distBetweenDots) {
+		for (let j = paddingLength; j < canvasHeight; j+=distBetweenDots) {
+			drawCircle(i, j, circleRadius, 'red');
+		}
+	}
+}
+
+function drawVerticalLines(paddingLength, canvasWidth, yLastRow, distBetweenDots) {
+	for (let x = paddingLength; x < canvasWidth; x += distBetweenDots) {
+		for (let y = paddingLength; y < yLastRow; y += distBetweenDots) {
+			drawVerticalLine(x, y, distBetweenDots, 1, 'black');
+		}
+	}
+}
+
+function drawHorizontalLines(paddingLength, canvasWidth, xLastColumn, distBetweenDots) {
+	for (let x = paddingLength; x < xLastColumn; x += distBetweenDots) {
+		for (let y = paddingLength; y < canvasHeight; y += distBetweenDots) {
+			drawHorizontalLine(x, y, distBetweenDots, 1, 'black');
+		}
+	}
+}
+
+// Get cursor position was borrowed from stackoverflow
+// https://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
+function getCursorPosition(event) {
+    const rect = canvas.getBoundingClientRect()
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    //console.log("x: " + x + " y: " + y);
+    return [x, y];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+drawVerticalLines(paddingLength, canvasWidth, yLastRow, distBetweenDots);
+drawHorizontalLines(paddingLength, canvasWidth, xLastColumn, distBetweenDots);
+drawDots(paddingLength, canvasWidth, canvasHeight, distBetweenDots, circleRadius);
 
 
 const firstDot = {
@@ -164,54 +94,119 @@ const secondDot = {
 	y: null
 };
 
-function getSecondDotClicked(e) {
-		let mousePos = getCursorPosition(canvas, e);
+let gameWon = false;
+
+const lines = {};
+
+// Fill object with info about horizontal lines
+for (var i = 0; i <= 2; i++) {
+	for (var j = 0; j <= 3; j++) {
+		lines[[i, j, (i+1), j]] = 0;
+		lines[[(i+1), j, i, j]] = 0;
+	}
+}
+// Fill object with info about vertical lines
+for (var i = 0; i <= 3; i++) {
+	for (var j = 0; j <= 2; j++) {
+		lines[[i, j, i, j+1]] = 0;
+		lines[[i, j+1, i, j]] = 0;
+	}
+}
+
+function validFirstDot(x, y) {
+	if (firstDot.x === 0) {
+		return true;
+	}
+	else {
+		
+		// Check if the left dot is unmarked
+		if ((x > 0) && (lines[[x, y, x-1, y]] === 0)) return true;
+		// Check if right dot is unmarked
+		else if ((x <= 2) && (lines[[x, y, x+1, y]] === 0)) return true;
+		// Check if top dot is unmarked
+		else if ((y > 0) && (lines[[x, y, x, y-1]] === 0)) return true;
+		// Check if bottom dot is unmarked
+		else if ((y <= 2) && (lines[[x, y, x, y+1]] === 0)) return true;
+		else {
+			console.log('reached here');
+			return false;
+		}
+	}
+}
+
+function validSecondDot(x1, y1, x2, y2) {
+	if (lines[[x1, y1, x2, y2]] === 0) return true;
+	else return false;
+}
+
+function getSecondDotClicked(event) {
+		let mousePos = getCursorPosition(event);
     	const x = mousePos[0];
     	const y = mousePos[1];
    		let dist = 0;
 		
 		// Use a double loop to check which dot has been clicked
 		// Also check if this dot is beside the first dot
-		for (let i = 74; i < 700; i+=184) {
-			for (let j = 74; j < 700; j+=184) {
+		for (let i = paddingLength; i < canvasWidth; i+=distBetweenDots) {
+			for (let j = paddingLength; j < canvasHeight; j+=distBetweenDots) {
 				dist = ((x-i)**2 + (y-j)**2)**0.5;
-				if ((dist <= circleRadius+10) && (Math.abs(firstDot.x-i)+Math.abs(firstDot.y-j) === 184)) {
+				let x1 = (firstDot.x-paddingLength)/distBetweenDots;
+				let y1 = (firstDot.y-paddingLength)/distBetweenDots;
+				let x2 = (i-paddingLength)/distBetweenDots;
+				let y2 = (j-paddingLength)/distBetweenDots;
+				if ((dist <= circleRadius+10) && validSecondDot(x1, y1, x2, y2)
+				  && (Math.abs(firstDot.x-i)+Math.abs(firstDot.y-j) === 184)) {
 					// Once the clicked dot has been identified, and it is 
 					// verified to be besides the first dot, turn it green
-					drawCircle(i, j, circleRadius, context, 'green');
+					drawCircle(i, j, circleRadius, 'green');
 					secondDot.x = i;
-					secondDot.y = j;
+					secondDot.y = j;					
+					
 					canvas.removeEventListener('mousedown', getSecondDotClicked);
 					// Create a line between the two dots
 					if (firstDot.x === secondDot.x) {
-						// Draw vertical line
-						drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y), 184, context, 5, 'blue');
-					
+						drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y), 184, 5, 'blue');
 					} else {
-						drawHorizontalLine(Math.min(firstDot.x, secondDot.x), firstDot.y, 184, context, 5, 'blue');
+						drawHorizontalLine(Math.min(firstDot.x, secondDot.x), firstDot.y, 184, 5, 'blue');
 					}
+					// Update lines object
+					lines[[x1, y1, x2, y2]] = 1;
+					lines[[x2, y2, x1, y1]] = 1;
+					console.log('line drawn');
+					// While game is not won, loop again
+					if (!gameWon) {
+						canvas.addEventListener('mousedown', getFirstDotClicked);
+					}
+
+					
 				}
 			}
 		}
 }
 
-function getFirstDotClicked(e) {
-	let mousePos = getCursorPosition(canvas, e);
+function getFirstDotClicked(event) {
+	let mousePos = getCursorPosition(event);
     	const x = mousePos[0];
     	const y = mousePos[1];
    		let dist = 0;
 		
 		// Use a double loop to check which dot has been clicked
-		for (let i = 74; i < 700; i+=184) {
-			for (let j = 74; j < 700; j+=184) {
-				dist = ((x-i)**2 + (y-j)**2)**0.5;
-				if (dist <= circleRadius+10) {
+		for (let i = paddingLength; i < canvasWidth; i+=distBetweenDots) {
+			for (let j = paddingLength; j < canvasHeight; j+=distBetweenDots) {
+				let dist = ((x-i)**2 + (y-j)**2)**0.5;
+				let y1 = (j-paddingLength)/distBetweenDots;
+				let x1 = (i-paddingLength)/distBetweenDots;
+				if ((dist <= circleRadius+10) && validFirstDot(x1, y1)){
 					// Once the clicked dot has been identified, turn it green
-					drawCircle(i, j, circleRadius, context, 'green');
+					drawCircle(i, j, circleRadius, 'green'); 
 					firstDot.x = i;
 					firstDot.y = j;
+					
 					canvas.removeEventListener('mousedown', getFirstDotClicked);
 					canvas.addEventListener('mousedown', getSecondDotClicked);
+
+					
+					
 				}
 			}
 		}
