@@ -173,6 +173,9 @@ function getSecondDotClicked(event) {
 					lines[[x1, y1, x2, y2]] = 1;
 					lines[[x2, y2, x1, y1]] = 1;
 					console.log('line drawn');
+
+					
+					
 					// While game is not won, loop again
 					if (!gameWon) {
 						canvas.addEventListener('mousedown', getFirstDotClicked);
