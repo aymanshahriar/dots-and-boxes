@@ -22,7 +22,7 @@ function detectSquareHorizontal(x1, y1, x2, y2) {
 		let leftLine = [x1, y1-1, x1, y1];
 		let rightLine = [x2, y2-1, x2, y2];
 
-		if ((lines[topLine] === 1) || (lines[leftLine] === 1) || (linesr[ightLine] == 1)) {
+		if ((lines[topLine] === 1) && (lines[leftLine] === 1) && (linesr[ightLine] == 1)) {
 			console.log('*******Square********');
 		}
 	}
@@ -31,7 +31,7 @@ function detectSquareHorizontal(x1, y1, x2, y2) {
 		let bottomLine = [x1, y1+1, x2, y2+1];
 		let leftLine = [x1, y1, x1, y1+1];
 		let rightLine = [x2, y2, x2, y2+1];
-		if ((lines[topLine] === 1) || (lines[leftLine] === 1) || (lines[rightLine] == 1)) {
+		if ((lines[topLine] === 1) && (lines[leftLine] === 1) && (lines[rightLine] == 1)) {
 			console.log('*******Square********');
 		}
 	}
@@ -50,7 +50,7 @@ function detectSquareVertical(x1, y1, x2, y2) {
 		let rightLine =[x1-1, y1, x2-1, y2];
 		let topLine = [x1-1, y1, x1, y1];
 		let bottomLine = [x2-1, y2, x2, y2];
-		if ((lines[rightLine] == 1) || (lines[topLine] === 1) || (lines[bottomLine] === 1) || ) {
+		if ((lines[rightLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1) || ) {
 			console.log('*******Square********');
 		}
 	}
@@ -59,7 +59,7 @@ function detectSquareVertical(x1, y1, x2, y2) {
 		let leftLine =[x1+1, y1, x2+1, y2];
 		let topLine = [x1, y1, x1+1, y1];
 		let bottomLine = [x2, y2, x2+1, y2];
-		if ((lines[leftLine] == 1) || (lines[topLine] === 1) || (lines[bottomLine] === 1) || ) {
+		if ((lines[leftLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1) || ) {
 			console.log('*******Square********');
 		}
 	}

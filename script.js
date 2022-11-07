@@ -139,6 +139,61 @@ function validSecondDot(x1, y1, x2, y2) {
 	else return false;
 }
 
+function detectSquareHorizontal(x1, y1, x2, y2) {
+	// Make sure point 1 always comes before point 2
+	if (x1 > x2) {
+		let temp = x1;
+		x1 = x2;
+		x2 = temp;
+	}
+	// Detect top square
+	if (y1 > 0) {
+		let topLine = [x1, y1-1, x2, y2-1];
+		let leftLine = [x1, y1-1, x1, y1];
+		let rightLine = [x2, y2-1, x2, y2];
+		if ((lines[topLine] === 1) && (lines[leftLine] === 1) && (lines[rightLine] == 1)) {
+			console.log('*******Square********');
+		}
+	}
+	// Detect Bottom square
+	if (y1 < 3) {
+		let bottomLine = [x1, y1+1, x2, y2+1];
+		let leftLine = [x1, y1, x1, y1+1];
+		let rightLine = [x2, y2, x2, y2+1];
+		if ((lines[bottomLine] === 1) && (lines[leftLine] === 1) && (lines[rightLine] == 1)) {
+			console.log('*******Square********');
+		}
+	}
+}
+
+function detectSquareVertical(x1, y1, x2, y2) {
+	// Make sure point1 always comes before point 2
+	if (y1 > y2) {
+		let temp = y1;
+		y1 = y2;
+		y2 = temp;
+	}
+	// Detect left square
+	if (x1 > 0) {
+		let rightLine =[x1-1, y1, x2-1, y2];
+		let topLine = [x1-1, y1, x1, y1];
+		let bottomLine = [x2-1, y2, x2, y2];
+		if ((lines[rightLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1)) {
+			console.log('*******Square********');
+		}
+	}
+	// Detect right square
+	if (x1 > 0) {
+		let leftLine =[x1+1, y1, x2+1, y2];
+		let topLine = [x1, y1, x1+1, y1];
+		let bottomLine = [x2, y2, x2+1, y2];
+		if ((lines[leftLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1)) {
+			console.log('*******Square********');
+		}
+	}
+}
+
+
 function getSecondDotClicked(event) {
 		let mousePos = getCursorPosition(event);
     	const x = mousePos[0];
@@ -161,21 +216,19 @@ function getSecondDotClicked(event) {
 					drawCircle(i, j, circleRadius, 'green');
 					secondDot.x = i;
 					secondDot.y = j;					
-					
+
 					canvas.removeEventListener('mousedown', getSecondDotClicked);
 					// Create a line between the two dots
-					if (firstDot.x === secondDot.x) {
-						drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y), 184, 5, 'blue');
-					} else {
-						drawHorizontalLine(Math.min(firstDot.x, secondDot.x), firstDot.y, 184, 5, 'blue');
-					}
+					if (firstDot.x === secondDot.x) drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y), 184, 5, 'blue');
+					else drawHorizontalLine(Math.min(firstDot.x, secondDot.x), firstDot.y, 184, 5, 'blue');					
 					// Update lines object
 					lines[[x1, y1, x2, y2]] = 1;
 					lines[[x2, y2, x1, y1]] = 1;
 					console.log('line drawn');
 
-					
-					
+					if (y1 === y2) detectSquareHorizontal(x1,y1,x2,y2);
+					else detectSquareVertical(x1,y1,x2,y2);
+
 					// While game is not won, loop again
 					if (!gameWon) {
 						canvas.addEventListener('mousedown', getFirstDotClicked);
