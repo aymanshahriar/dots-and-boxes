@@ -55,7 +55,7 @@ function detectSquareVertical(x1, y1, x2, y2) {
 		}
 	}
 	// Detect right square
-	if (x1 > 0) {
+	if (x1 < 3) {
 		let leftLine =[x1+1, y1, x2+1, y2];
 		let topLine = [x1, y1, x1+1, y1];
 		let bottomLine = [x2, y2, x2+1, y2];
