@@ -14,14 +14,13 @@ const yLastRow = paddingLength + ((gridSize-1)*distBetweenDots);
 const xLastColumn = paddingLength + ((gridSize-1)*distBetweenDots);
 
 function drawCircle(x, y, r, color) {
-	context.strokeStyle = "black";
-	context.lineWidth = 1;
+	/*context.strokeStyle = "black";
+	context.lineWidth = 1;*/
 
 	context.beginPath();
 	context.arc(x, y, r, 0,  2* Math.PI);
 	context.fillStyle = color;
 	context.fill();
-	context.stroke();
 }
 
 function drawVerticalLine(x, y, length, thickness, color) {
@@ -41,10 +40,16 @@ function drawHorizontalLine(x, y, length, thickness, color) {
 		context.stroke(); 
 }
 
+function drawSquare(x, y, color) {
+	context.fillStyle = color;
+	context.fillRect(paddingLength+(x*distBetweenDots)+10,paddingLength+(y*distBetweenDots)+10,
+		distBetweenDots-20,distBetweenDots-20);
+}
+
 function drawDots(paddingLength, canvasWidth, canvasHeight, distBetweenDots, circleRadius) {
 	for (let i = paddingLength; i < canvasWidth; i+=distBetweenDots) {
 		for (let j = paddingLength; j < canvasHeight; j+=distBetweenDots) {
-			drawCircle(i, j, circleRadius, 'red');
+			drawCircle(i, j, circleRadius, 'black');
 		}
 	}
 }
@@ -153,6 +158,7 @@ function detectSquareHorizontal(x1, y1, x2, y2) {
 		let rightLine = [x2, y2-1, x2, y2];
 		if ((lines[topLine] === 1) && (lines[leftLine] === 1) && (lines[rightLine] == 1)) {
 			console.log('Top Square');
+			drawSquare(x1, y1-1, 'SkyBlue');
 		}
 	}
 	// Detect Bottom square
@@ -162,6 +168,7 @@ function detectSquareHorizontal(x1, y1, x2, y2) {
 		let rightLine = [x2, y2, x2, y2+1];
 		if ((lines[bottomLine] === 1) && (lines[leftLine] === 1) && (lines[rightLine] == 1)) {
 			console.log('Bottom Square');
+			drawSquare(x1, y1, 'SkyBlue');
 		}
 	}
 }
@@ -175,20 +182,22 @@ function detectSquareVertical(x1, y1, x2, y2) {
 	}
 	// Detect left square
 	if (x1 > 0) {
-		let rightLine =[x1-1, y1, x2-1, y2];
+		let leftLine =[x1-1, y1, x2-1, y2];
 		let topLine = [x1-1, y1, x1, y1];
 		let bottomLine = [x2-1, y2, x2, y2];
-		if ((lines[rightLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1)) {
+		if ((lines[leftLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1)) {
 			console.log('Left Square');
+			drawSquare(x1-1, y1, 'SkyBlue');
 		}
 	}
 	// Detect right square
 	if (x1 < 3) {
-		let leftLine =[x1+1, y1, x2+1, y2];
+		let rightLine =[x1+1, y1, x2+1, y2];
 		let topLine = [x1, y1, x1+1, y1];
 		let bottomLine = [x2, y2, x2+1, y2];
-		if ((lines[leftLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1)) {
+		if ((lines[rightLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1)) {
 			console.log('Right Square');
+			drawSquare(x1, y1, 'SkyBlue')
 		}
 	}
 }
@@ -221,6 +230,7 @@ function getSecondDotClicked(event) {
 					// Create a line between the two dots
 					if (firstDot.x === secondDot.x) drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y), 184, 5, 'blue');
 					else drawHorizontalLine(Math.min(firstDot.x, secondDot.x), firstDot.y, 184, 5, 'blue');					
+
 					// Update lines object
 					lines[[x1, y1, x2, y2]] = 1;
 					lines[[x2, y2, x1, y1]] = 1;
