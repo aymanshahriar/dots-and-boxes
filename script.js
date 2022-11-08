@@ -99,9 +99,9 @@ const secondDot = {
 	y: null
 };
 
-let gameWon = false;
 let curTurn = 0;  // 0 - first player, 1 = second player, 2 = 3rd player
 let turnColors = ['red', 'SkyBlue', 'yellow'];
+let scores = [0, 0, 0];
 
 const lines = {};
 
@@ -163,6 +163,7 @@ function detectSquareHorizontal(x1, y1, x2, y2, color) {
 			console.log('Top Square');
 			drawSquare(x1, y1-1, color);
 			squareDetected = true;
+			scores[curTurn] += 1;
 		}
 	}
 	// Detect Bottom square
@@ -174,6 +175,7 @@ function detectSquareHorizontal(x1, y1, x2, y2, color) {
 			console.log('Bottom Square');
 			drawSquare(x1, y1, color);
 			squareDetected = true;
+			scores[curTurn] += 1;
 		}
 	}
 	return squareDetected
@@ -196,6 +198,7 @@ function detectSquareVertical(x1, y1, x2, y2, color) {
 			console.log('Left Square');
 			drawSquare(x1-1, y1, color);
 			squareDetected = true;
+			scores[curTurn] += 1;
 		}
 	}
 	// Detect right square
@@ -207,6 +210,7 @@ function detectSquareVertical(x1, y1, x2, y2, color) {
 			console.log('Right Square');
 			drawSquare(x1, y1, color)
 			squareDetected = true;
+			scores[curTurn] += 1;
 		}
 	}
 	return squareDetected;
@@ -244,7 +248,6 @@ function getSecondDotClicked(event) {
 					// Update lines object
 					lines[[x1, y1, x2, y2]] = 1;
 					lines[[x2, y2, x1, y1]] = 1;
-					console.log('line drawn');
 
 					let squareDetected = false;
 					if (y1 === y2) squareDetected = detectSquareHorizontal(x1,y1,x2,y2, turnColors[curTurn]);
@@ -257,7 +260,7 @@ function getSecondDotClicked(event) {
 					}
 
 					// While game is not won, loop again
-					if (!gameWon) {
+					if (scores.reduce((a,b)=>a+b) < 9) {
 						canvas.addEventListener('mousedown', getFirstDotClicked);
 					}
 
