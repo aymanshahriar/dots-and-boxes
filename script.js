@@ -218,84 +218,83 @@ function detectSquareVertical(x1, y1, x2, y2, color) {
 
 
 function getSecondDotClicked(event) {
-		let mousePos = getCursorPosition(event);
-    	const x = mousePos[0];
-    	const y = mousePos[1];
-   		let dist = 0;
+	let mousePos = getCursorPosition(event);
+    const x = mousePos[0];
+    const y = mousePos[1];
+   	let dist = 0;
 		
-		// Use a double loop to check which dot has been clicked
-		// Also check if this dot is beside the first dot
-		for (let i = paddingLength; i < canvasWidth; i+=distBetweenDots) {
-			for (let j = paddingLength; j < canvasHeight; j+=distBetweenDots) {
-				dist = ((x-i)**2 + (y-j)**2)**0.5;
-				let x1 = (firstDot.x-paddingLength)/distBetweenDots;
-				let y1 = (firstDot.y-paddingLength)/distBetweenDots;
-				let x2 = (i-paddingLength)/distBetweenDots;
-				let y2 = (j-paddingLength)/distBetweenDots;
-				if ((dist <= circleRadius+10) && validSecondDot(x1, y1, x2, y2)
-				  && (Math.abs(firstDot.x-i)+Math.abs(firstDot.y-j) === 184)) {
-					// Once the clicked dot has been identified, and it is 
-					// verified to be besides the first dot, turn it green
-					drawCircle(i, j, circleRadius, 'green');
-					secondDot.x = i;
-					secondDot.y = j;					
+	// Use a double loop to check which dot has been clicked
+	// Also check if this dot is beside the first dot
+	for (let i = paddingLength; i < canvasWidth; i+=distBetweenDots) {
+		for (let j = paddingLength; j < canvasHeight; j+=distBetweenDots) {
+			dist = ((x-i)**2 + (y-j)**2)**0.5;
+			let x1 = (firstDot.x-paddingLength)/distBetweenDots;
+			let y1 = (firstDot.y-paddingLength)/distBetweenDots;
+			let x2 = (i-paddingLength)/distBetweenDots;
+			let y2 = (j-paddingLength)/distBetweenDots;
+			if ((dist <= circleRadius+10) && validSecondDot(x1, y1, x2, y2)
+				 && (Math.abs(firstDot.x-i)+Math.abs(firstDot.y-j) === 184)) {
+				// Once the clicked dot has been identified, and it is 
+				// verified to be besides the first dot, turn it green
+				drawCircle(i, j, circleRadius, 'green');
+				secondDot.x = i;
+				secondDot.y = j;					
 
-					canvas.removeEventListener('mousedown', getSecondDotClicked);
-					// Create a line between the two dots
-					if (firstDot.x === secondDot.x) drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y), 184, 5, turnColors[curTurn]);
-					else drawHorizontalLine(Math.min(firstDot.x, secondDot.x), firstDot.y, 184, 5, turnColors[curTurn]);					
+				canvas.removeEventListener('mousedown', getSecondDotClicked);
+				// Create a line between the two dots
+				drawCircle(-5, -5, 1, 'white');  // prevents glitch
+				if (firstDot.x === secondDot.x) drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y)+circleRadius, distBetweenDots-(2*circleRadius), 5, turnColors[curTurn]);
+				else drawHorizontalLine(Math.min(firstDot.x, secondDot.x)+circleRadius, firstDot.y, distBetweenDots-(2*circleRadius), 5, turnColors[curTurn]);					
 
-					// Update lines object
-					lines[[x1, y1, x2, y2]] = 1;
-					lines[[x2, y2, x1, y1]] = 1;
+				// Update lines object
+				lines[[x1, y1, x2, y2]] = 1;
+				lines[[x2, y2, x1, y1]] = 1;
 
-					let squareDetected = false;
-					if (y1 === y2) squareDetected = detectSquareHorizontal(x1,y1,x2,y2, turnColors[curTurn]);
-					else squareDetected = detectSquareVertical(x1,y1,x2,y2, turnColors[curTurn]);
+				let squareDetected = false;
+				if (y1 === y2) squareDetected = detectSquareHorizontal(x1,y1,x2,y2, turnColors[curTurn]);
+				else squareDetected = detectSquareVertical(x1,y1,x2,y2, turnColors[curTurn]);
 
-					// If a square (or two squares) was made in this turn, give the player an extra turn
-					// Else if no squares were made in this turn, give the next player the next turn
-					if (!squareDetected) {
-						curTurn = (curTurn+1)%3;
-					}
-
-					// While game is not won, loop again
-					if (scores.reduce((a,b)=>a+b) < 9) {
-						canvas.addEventListener('mousedown', getFirstDotClicked);
-					}
-
-					
+				// If a square (or two squares) was made in this turn, give the player an extra turn
+				// Else if no squares were made in this turn, give the next player the next turn
+				if (!squareDetected) {
+					curTurn = (curTurn+1)%3;
 				}
+
+				// While game is not won, loop again
+				if (scores.reduce((a,b)=>a+b) < 9) {
+					canvas.addEventListener('mousedown', getFirstDotClicked);
+				}		
 			}
 		}
+	}
 }
 
 function getFirstDotClicked(event) {
 	let mousePos = getCursorPosition(event);
-    	const x = mousePos[0];
-    	const y = mousePos[1];
-   		let dist = 0;
+    const x = mousePos[0];
+    const y = mousePos[1];
+   	let dist = 0;
 		
-		// Use a double loop to check which dot has been clicked
-		for (let i = paddingLength; i < canvasWidth; i+=distBetweenDots) {
-			for (let j = paddingLength; j < canvasHeight; j+=distBetweenDots) {
-				let dist = ((x-i)**2 + (y-j)**2)**0.5;
-				let y1 = (j-paddingLength)/distBetweenDots;
-				let x1 = (i-paddingLength)/distBetweenDots;
-				if ((dist <= circleRadius+10) && validFirstDot(x1, y1)){
-					// Once the clicked dot has been identified, turn it green
-					drawCircle(i, j, circleRadius, 'green'); 
-					firstDot.x = i;
-					firstDot.y = j;
+	// Use a double loop to check which dot has been clicked
+	for (let i = paddingLength; i < canvasWidth; i+=distBetweenDots) {
+		for (let j = paddingLength; j < canvasHeight; j+=distBetweenDots) {
+			let dist = ((x-i)**2 + (y-j)**2)**0.5;
+			let y1 = (j-paddingLength)/distBetweenDots;
+			let x1 = (i-paddingLength)/distBetweenDots;
+			if ((dist <= circleRadius+10) && validFirstDot(x1, y1)){
+				// Once the clicked dot has been identified, turn it green
+				drawCircle(i, j, circleRadius, 'green'); 
+				firstDot.x = i;
+				firstDot.y = j;
 					
-					canvas.removeEventListener('mousedown', getFirstDotClicked);
-					canvas.addEventListener('mousedown', getSecondDotClicked);
+				canvas.removeEventListener('mousedown', getFirstDotClicked);
+				canvas.addEventListener('mousedown', getSecondDotClicked);
 
 					
 					
-				}
 			}
 		}
+	}
 }
 
 

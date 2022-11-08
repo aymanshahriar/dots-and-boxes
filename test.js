@@ -1,72 +1,44 @@
-// given a line (two points), determine if vertical or horizontal line
-// if horizontal line, check if square was made above or below
-// if vertical line, check if square was made left of right
+// Use a DOM selector method to get the canvas element
+const canvas = document.getElementById('myCanvas');
+// Get the context of the canvas element, which is used to draw on the canvas
+const context = canvas.getContext('2d'); 
 
-function vertOrHor(x1, y1, x2, y2) {
-	if (y1 === y2) return 'horizontal';
-	else return 'vertical';
-	
+const circleRadius = 15;
+const canvasHeight = 700;
+const canvasWidth = 700;
+const paddingLength = 74;
+const gridSize = 4
+const distBetweenDots = 184;
+
+const yLastRow = paddingLength + ((gridSize-1)*distBetweenDots);
+const xLastColumn = paddingLength + ((gridSize-1)*distBetweenDots);
+
+function drawCircle(x, y, r, color) {
+	/*context.strokeStyle = "black";
+	context.lineWidth = 1;*/
+
+	context.beginPath();
+	context.arc(x, y, r, 0,  2* Math.PI);
+	context.fillStyle = color;
+	context.fill();
+	context.stroke;
 }
 
-function detectSquareHorizontal(x1, y1, x2, y2) {
-	// Make sure point 1 always comes before point 2
-	if (x1 > x2) {
-		let temp = x1;
-		x1 = x2;
-		x2 = temp;
-	}
-
-	// Detect top square
-	if (y1 > 0) {
-		let topLine = [x1, y1-1, x2, y2-1];
-		let leftLine = [x1, y1-1, x1, y1];
-		let rightLine = [x2, y2-1, x2, y2];
-
-		if ((lines[topLine] === 1) && (lines[leftLine] === 1) && (linesr[ightLine] == 1)) {
-			console.log('*******Square********');
-		}
-	}
-	// Detect Bottom square
-	if (y1 < 3) {
-		let bottomLine = [x1, y1+1, x2, y2+1];
-		let leftLine = [x1, y1, x1, y1+1];
-		let rightLine = [x2, y2, x2, y2+1];
-		if ((lines[topLine] === 1) && (lines[leftLine] === 1) && (lines[rightLine] == 1)) {
-			console.log('*******Square********');
-		}
-	}
+function drawHorizontalLine(x, y, length, thickness, color) {
+		context.moveTo(x, y);
+		context.lineTo(x+length, y);
+		context.strokeStyle = color;
+		context.lineWidth = thickness;
+		context.stroke(); 
 }
 
-function detectSquareVertical(x1, y1, x2, y2) {
-	// Make sure point1 always comes before point 2
-	if (y1 > y2) {
-		let temp = y1;
-		y1 = y2;
-		y2 = temp;
-	}
+drawCircle(paddingLength, paddingLength, circleRadius, 'black');
 
-	// Detect left square
-	if (x1 > 0) {
-		let rightLine =[x1-1, y1, x2-1, y2];
-		let topLine = [x1-1, y1, x1, y1];
-		let bottomLine = [x2-1, y2, x2, y2];
-		if ((lines[rightLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1) || ) {
-			console.log('*******Square********');
-		}
-	}
-	// Detect right square
-	if (x1 < 3) {
-		let leftLine =[x1+1, y1, x2+1, y2];
-		let topLine = [x1, y1, x1+1, y1];
-		let bottomLine = [x2, y2, x2+1, y2];
-		if ((lines[leftLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1) || ) {
-			console.log('*******Square********');
-		}
-	}
-}
+drawCircle(paddingLength+distBetweenDots, paddingLength, circleRadius, 'black');
 
+drawCircle(-5, -5, 1, 'white');
 
-
+drawHorizontalLine(paddingLength+circleRadius, paddingLength, distBetweenDots-(2*circleRadius), 5, 'blue');
 
 
 
