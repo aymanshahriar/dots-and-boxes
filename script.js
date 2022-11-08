@@ -100,6 +100,8 @@ const secondDot = {
 };
 
 let gameWon = false;
+let curTurn = 0;  // 0 - first player, 1 = second player, 2 = 3rd player
+let turnColors = ['red', 'SkyBlue', 'yellow'];
 
 const lines = {};
 
@@ -144,13 +146,14 @@ function validSecondDot(x1, y1, x2, y2) {
 	else return false;
 }
 
-function detectSquareHorizontal(x1, y1, x2, y2) {
+function detectSquareHorizontal(x1, y1, x2, y2, color) {
 	// Make sure point 1 always comes before point 2
 	if (x1 > x2) {
 		let temp = x1;
 		x1 = x2;
 		x2 = temp;
 	}
+	let squareDetected = false;
 	// Detect top square
 	if (y1 > 0) {
 		let topLine = [x1, y1-1, x2, y2-1];
@@ -158,7 +161,8 @@ function detectSquareHorizontal(x1, y1, x2, y2) {
 		let rightLine = [x2, y2-1, x2, y2];
 		if ((lines[topLine] === 1) && (lines[leftLine] === 1) && (lines[rightLine] == 1)) {
 			console.log('Top Square');
-			drawSquare(x1, y1-1, 'SkyBlue');
+			drawSquare(x1, y1-1, color);
+			squareDetected = true;
 		}
 	}
 	// Detect Bottom square
@@ -168,18 +172,21 @@ function detectSquareHorizontal(x1, y1, x2, y2) {
 		let rightLine = [x2, y2, x2, y2+1];
 		if ((lines[bottomLine] === 1) && (lines[leftLine] === 1) && (lines[rightLine] == 1)) {
 			console.log('Bottom Square');
-			drawSquare(x1, y1, 'SkyBlue');
+			drawSquare(x1, y1, color);
+			squareDetected = true;
 		}
 	}
+	return squareDetected
 }
 
-function detectSquareVertical(x1, y1, x2, y2) {
+function detectSquareVertical(x1, y1, x2, y2, color) {
 	// Make sure point1 always comes before point 2
 	if (y1 > y2) {
 		let temp = y1;
 		y1 = y2;
 		y2 = temp;
 	}
+	let squareDetected = false;
 	// Detect left square
 	if (x1 > 0) {
 		let leftLine =[x1-1, y1, x2-1, y2];
@@ -187,7 +194,8 @@ function detectSquareVertical(x1, y1, x2, y2) {
 		let bottomLine = [x2-1, y2, x2, y2];
 		if ((lines[leftLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1)) {
 			console.log('Left Square');
-			drawSquare(x1-1, y1, 'SkyBlue');
+			drawSquare(x1-1, y1, color);
+			squareDetected = true;
 		}
 	}
 	// Detect right square
@@ -197,9 +205,11 @@ function detectSquareVertical(x1, y1, x2, y2) {
 		let bottomLine = [x2, y2, x2+1, y2];
 		if ((lines[rightLine] == 1) && (lines[topLine] === 1) && (lines[bottomLine] === 1)) {
 			console.log('Right Square');
-			drawSquare(x1, y1, 'SkyBlue')
+			drawSquare(x1, y1, color)
+			squareDetected = true;
 		}
 	}
+	return squareDetected;
 }
 
 
@@ -228,16 +238,23 @@ function getSecondDotClicked(event) {
 
 					canvas.removeEventListener('mousedown', getSecondDotClicked);
 					// Create a line between the two dots
-					if (firstDot.x === secondDot.x) drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y), 184, 5, 'blue');
-					else drawHorizontalLine(Math.min(firstDot.x, secondDot.x), firstDot.y, 184, 5, 'blue');					
+					if (firstDot.x === secondDot.x) drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y), 184, 5, turnColors[curTurn]);
+					else drawHorizontalLine(Math.min(firstDot.x, secondDot.x), firstDot.y, 184, 5, turnColors[curTurn]);					
 
 					// Update lines object
 					lines[[x1, y1, x2, y2]] = 1;
 					lines[[x2, y2, x1, y1]] = 1;
 					console.log('line drawn');
 
-					if (y1 === y2) detectSquareHorizontal(x1,y1,x2,y2);
-					else detectSquareVertical(x1,y1,x2,y2);
+					let squareDetected = false;
+					if (y1 === y2) squareDetected = detectSquareHorizontal(x1,y1,x2,y2, turnColors[curTurn]);
+					else squareDetected = detectSquareVertical(x1,y1,x2,y2, turnColors[curTurn]);
+
+					// If a square (or two squares) was made in this turn, give the player an extra turn
+					// Else if no squares were made in this turn, give the next player the next turn
+					if (!squareDetected) {
+						curTurn = (curTurn+1)%3;
+					}
 
 					// While game is not won, loop again
 					if (!gameWon) {
