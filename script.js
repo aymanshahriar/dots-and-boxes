@@ -1,7 +1,15 @@
+const turnElement = document.getElementById('currentTurn');
+const redScoreElement = document.getElementById('scoreRed');
+const blueScoreElement = document.getElementById('scoreBlue');
+const yellowScoreElement = document.getElementById('scoreYellow');
+const btnElement = document.getElementById('restartButton');
+
 // Use a DOM selector method to get the canvas element
 const canvas = document.getElementById('myCanvas');
 // Get the context of the canvas element, which is used to draw on the canvas
 const context = canvas.getContext('2d'); 
+//context.globalAlpha = 0.5;
+
 
 const circleRadius = 15;
 const canvasHeight = 700;
@@ -41,9 +49,11 @@ function drawHorizontalLine(x, y, length, thickness, color) {
 }
 
 function drawSquare(x, y, color) {
+	context.globalAlpha = 0.5;
 	context.fillStyle = color;
 	context.fillRect(paddingLength+(x*distBetweenDots)+10,paddingLength+(y*distBetweenDots)+10,
 		distBetweenDots-20,distBetweenDots-20);
+	context.globalAlpha = 1;
 }
 
 function drawDots(paddingLength, canvasWidth, canvasHeight, distBetweenDots, circleRadius) {
@@ -100,7 +110,7 @@ const secondDot = {
 };
 
 let curTurn = 0;  // 0 - first player, 1 = second player, 2 = 3rd player
-let turnColors = ['red', 'SkyBlue', 'yellow'];
+let turnColors = ['red', 'blue', 'yellow'];
 let scores = [0, 0, 0];
 
 const lines = {};
@@ -119,6 +129,8 @@ for (var i = 0; i <= 3; i++) {
 		lines[[i, j+1, i, j]] = 0;
 	}
 }
+
+
 
 function validFirstDot(x, y) {
 	if (firstDot.x === 0) {
@@ -233,10 +245,10 @@ function getSecondDotClicked(event) {
 			let x2 = (i-paddingLength)/distBetweenDots;
 			let y2 = (j-paddingLength)/distBetweenDots;
 			if ((dist <= circleRadius+10) && validSecondDot(x1, y1, x2, y2)
-				 && (Math.abs(firstDot.x-i)+Math.abs(firstDot.y-j) === 184)) {
+				 && (Math.abs(firstDot.x-i)+Math.abs(firstDot.y-j) === distBetweenDots)) {
 				// Once the clicked dot has been identified, and it is 
 				// verified to be besides the first dot, turn it green
-				drawCircle(i, j, circleRadius, 'green');
+				//drawCircle(i, j, circleRadius, 'green');
 				secondDot.x = i;
 				secondDot.y = j;					
 
@@ -245,7 +257,7 @@ function getSecondDotClicked(event) {
 				drawCircle(-5, -5, 1, 'white');  // prevents glitch
 				if (firstDot.x === secondDot.x) drawVerticalLine(firstDot.x, Math.min(firstDot.y, secondDot.y)+circleRadius, distBetweenDots-(2*circleRadius), 5, turnColors[curTurn]);
 				else drawHorizontalLine(Math.min(firstDot.x, secondDot.x)+circleRadius, firstDot.y, distBetweenDots-(2*circleRadius), 5, turnColors[curTurn]);					
-
+				drawCircle(firstDot.x, firstDot.y, circleRadius, 'black'); // color dot back to black
 				// Update lines object
 				lines[[x1, y1, x2, y2]] = 1;
 				lines[[x2, y2, x1, y1]] = 1;
@@ -259,17 +271,33 @@ function getSecondDotClicked(event) {
 				if (!squareDetected) {
 					curTurn = (curTurn+1)%3;
 				}
-
+				turnElement.innerHTML = turnColors[curTurn];
+				turnElement.className = turnColors[curTurn];
+				redScoreElement.innerHTML = scores[0];
+				blueScoreElement.innerHTML = scores[1];
+				yellowScoreElement.innerHTML = scores[2];
 				// While game is not won, loop again
 				if (scores.reduce((a,b)=>a+b) < 9) {
 					canvas.addEventListener('mousedown', getFirstDotClicked);
-				}		
+				} else {
+					setTimeout(function(){ alert("Gemz is over"); }, 1000);
+					
+				}
+
 			}
 		}
 	}
+	// If at this point, it must mean that user didn't click on a circle, so remove first dot clicked
+	drawCircle(firstDot.x, firstDot.y, circleRadius, 'black');
+	firstDot.x = null;
+	secondDot.x = null;
+
+	canvas.removeEventListener('mousedown', getSecondDotClicked);
+	canvas.addEventListener('mousedown', getFirstDotClicked);
 }
 
-function getFirstDotClicked(event) {
+function getFirstDotClicked(event) {	
+
 	let mousePos = getCursorPosition(event);
     const x = mousePos[0];
     const y = mousePos[1];
@@ -283,26 +311,61 @@ function getFirstDotClicked(event) {
 			let x1 = (i-paddingLength)/distBetweenDots;
 			if ((dist <= circleRadius+10) && validFirstDot(x1, y1)){
 				// Once the clicked dot has been identified, turn it green
-				drawCircle(i, j, circleRadius, 'green'); 
+				drawCircle(i, j, circleRadius, turnColors[curTurn]); 
 				firstDot.x = i;
 				firstDot.y = j;
 					
 				canvas.removeEventListener('mousedown', getFirstDotClicked);
-				canvas.addEventListener('mousedown', getSecondDotClicked);
-
-					
-					
+				canvas.addEventListener('mousedown', getSecondDotClicked);					
 			}
 		}
 	}
 }
 
+turnElement.innerHTML = turnColors[curTurn];
+turnElement.className = turnColors[curTurn];
 
+redScoreElement.innerHTML = scores[0];
+blueScoreElement.innerHTML = scores[1];
+yellowScoreElement.innerHTML = scores[2];
 	
 canvas.addEventListener('mousedown', getFirstDotClicked);
 
 
 
+btnElement.addEventListener('click', function() {
+	canvas.removeEventListener('mousedown', getSecondDotClicked);
+	canvas.removeEventListener('mousedown', getFirstDotClicked);
+	// Reset the two points, scores, lines
+	firstDot.x = 0;
+	firstDot.y = 0;
+	secondDot.x = 0;
+	secondDot.y = 0;
+
+	curTurn = 0;  
+	scores = [0, 0, 0];
+
+	for (key in lines) {
+		lines[key] = 0;
+	}
+	console.log(lines);
+
+	// Clear the canvas
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	drawVerticalLines(paddingLength, canvasWidth, yLastRow, distBetweenDots);
+	drawHorizontalLines(paddingLength, canvasWidth, xLastColumn, distBetweenDots);
+	drawDots(paddingLength, canvasWidth, canvasHeight, distBetweenDots, circleRadius);
+
+	turnElement.innerHTML = turnColors[curTurn];
+	turnElement.className = turnColors[curTurn];
+
+	redScoreElement.innerHTML = scores[0];
+	blueScoreElement.innerHTML = scores[1];
+	yellowScoreElement.innerHTML = scores[2];
+	
+	canvas.addEventListener('mousedown', getFirstDotClicked);
+
+});
 
 
 

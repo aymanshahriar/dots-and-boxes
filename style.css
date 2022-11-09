@@ -2,7 +2,42 @@
     /*width: 700px;
     height: 700px;*/
     border: 5px solid black;
+}
 
+.red {
+    color: red;
+    font-weight: bold;
+    padding-left: 10px;
+}
 
+.blue {
+    color: blue;
+    font-weight: bold;
+    padding-left: 10px;
+}
 
+.yellow {
+    color: #F4C430; /*saffron*/
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+#scoreRed {
+    color: red;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-right: 8px;
+}
+
+#scoreBlue {
+    color: blue;
+    font-weight: bold;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+#scoreYellow {
+    color: #F4C430; /*saffron*/
+    font-weight: bold;
+    padding-left: 8px;
 }
