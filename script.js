@@ -130,7 +130,26 @@ for (var i = 0; i <= 3; i++) {
 	}
 }
 
+function determineWinner() {
+	let winners = [];
+	let highestValue = Math.max(...scores);
+	for (let i = 0; i < scores.length; i++) {
+		if (scores[i] == highestValue) {
+			winners.push(turnColors[i]);
+		}
+	}
+	let winningMessage = '';
+	if (winners.length == 1) {
+		winningMessage = `The winner is ${winners[0]}!`;
+	} else if (winners.length == 2) {
+		winningMessage = `It's a tie between ${winners[0]} and ${winners[1]}!`;
+	} else {
+		winningMessage = `It's a tie between ${winners[0]}, ${winners[1]} and ${winners[2]}!`;
+	}
 
+	let scoreMessage = `Scores:\nRed: ${scores[0]}\nBlue: ${scores[1]}\nGreen: ${scores[2]}`;
+	return winningMessage + '\n\n' + scoreMessage; 
+}
 
 function validFirstDot(x, y) {
 	if (firstDot.x === 0) {
@@ -280,7 +299,7 @@ function getSecondDotClicked(event) {
 				if (scores.reduce((a,b)=>a+b) < 9) {
 					canvas.addEventListener('mousedown', getFirstDotClicked);
 				} else {
-					setTimeout(function(){ alert("Gemz is over"); }, 1000);
+					setTimeout(function(){ alert(determineWinner()); }, 500);
 					
 				}
 
