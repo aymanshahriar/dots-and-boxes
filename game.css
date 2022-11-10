@@ -6,10 +6,7 @@
 }
 
 #myCanvas {
-    /*width: 700px;
-    height: 700px;*/
     border: 4px solid black;
-
     /*Used to center the canvas*/
     padding-left: 0;
     padding-right: 0;
@@ -65,20 +62,35 @@
 
 #restartButton {
     padding: 16px 23px;
-    border: none;
     cursor: pointer;
     background-color: #DAF7A6;
     border-radius: 12px;
     border: 2px solid #4CAF50; 
-
     transition-duration: 0.4s;
-
     font-size: 16px;
+    margin-right: 40px;
 
 }
-
 
 #restartButton:hover {
   background-color: #4CAF50; 
   color: white;
 }
+
+#homeButton {
+    padding: 16px 23px;
+    cursor: pointer;
+    background-color: #FF9B48;
+    border-radius: 12px;
+    border: 2px solid #DE6500; 
+    transition-duration: 0.4s;
+    font-size: 16px;
+    margin-left: 40px;
+
+}
+
+#homeButton:hover {
+  background-color: #DE6500; 
+  color: white;
+}
+

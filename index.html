@@ -3,21 +3,18 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Dots & Boxes</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>Homepage</title>
+	<link rel="stylesheet" type="text/css" href="index.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 	<title></title>
 </head>
 <body>
-
-	
-	<p id='test' class="info">Current Turn: <span id="currentTurn"></span></p>
-	<p class="info">Score: <span id="scoreRed"></span><span id="scoreBlue"></span><span id="scoreYellow"></span></p>
-	<div class="info"><button id="restartButton">Restart Game</button></div>
-	<canvas id="myCanvas" width="700" height="700"></canvas>
-
-	<script src="script.js"></script> 
+	<h1 class="info"><span id="titleBlue">Dots </span><span id="titleYellow">And </span><span id="titleRed">Boxes </span></h1>
+	<h2 class="info">Instructions:</h2>
+	<p class="info">The game is playable for 3 players. <br>Players take turns to add lines to
+		the board.<br>In each turn, a player can add a line by clicking on two adjacent dots, which will result in a line being formed between those two dots (the color of the line will be the same as the player's color). <br>Whenever a player completes a box, they get a point, in addition to another turn. <br>The game finishes when someone claims the last box. <br>The winner is the player who has the most boxes. </p>
+	<div class="info"><a href="game.html"><button class="button">Start Game</button></a></div>	
 </body>
 </html>
