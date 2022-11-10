@@ -1,7 +1,28 @@
+* {
+    font-family: 'Press Start 2P', cursive;
+    font-weight: bold;
+    font-size: 18px;
+
+}
+
 #myCanvas {
     /*width: 700px;
     height: 700px;*/
-    border: 5px solid black;
+    border: 4px solid black;
+
+    /*Used to center the canvas*/
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .red {
@@ -40,4 +61,24 @@
     color: #F4C430; /*saffron*/
     font-weight: bold;
     padding-left: 8px;
+}
+
+#restartButton {
+    padding: 16px 23px;
+    border: none;
+    cursor: pointer;
+    background-color: #DAF7A6;
+    border-radius: 12px;
+    border: 2px solid #4CAF50; 
+
+    transition-duration: 0.4s;
+
+    font-size: 16px;
+
+}
+
+
+#restartButton:hover {
+  background-color: #4CAF50; 
+  color: white;
 }

@@ -147,7 +147,7 @@ function determineWinner() {
 		winningMessage = `It's a tie between ${winners[0]}, ${winners[1]} and ${winners[2]}!`;
 	}
 
-	let scoreMessage = `Scores:\nRed: ${scores[0]}\nBlue: ${scores[1]}\nGreen: ${scores[2]}`;
+	let scoreMessage = `Scores:\nRed: ${scores[0]}\nBlue: ${scores[1]}\nYellow: ${scores[2]}`;
 	return winningMessage + '\n\n' + scoreMessage; 
 }
 
